@@ -25,9 +25,8 @@ class LiquidNet(nn.Module):
         self.output_layer = nn.Linear(hidden_size, output_size)
     
     def forward(self, x):
-        batch_size, seq_len, _ = x.size()
-        h = torch.zeros(batch_size, self.hidden_size, device=x.device)
-        for t in range(seq_len):
-            h = self.liquid_step(x[:, t, :], h)
+        batch_size = x.size(0)
+        h = torch.zeros(batch_size, self.hidden_size, device=x.device) 
+        h = self.liquid_step(x, h)  
         output = self.output_layer(h)
         return output

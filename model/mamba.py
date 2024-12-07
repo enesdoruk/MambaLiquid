@@ -43,13 +43,13 @@ class Mamba(nn.Module):
         self.config = config
 
         self.layers = nn.ModuleList([ResidualBlock(config) for _ in range(config.n_layers)])
-        self.attention = nn.ModuleList([LiquidAttention(config.d_state, config.num_heads) for _ in range(config.n_layers)])
+        self.attention = nn.ModuleList([LiquidAttention(config) for _ in range(config.n_layers)])
         self.norm_f = RMSNorm(config.d_model)
 
     def forward(self, x):
         for i, layer in enumerate(self.layers):
             x = layer(x)
-            x = self.attention[i](x).unsqueeze(1)
+            x = self.attention[i](x)
         x = self.norm_f(x)
         return x
     
@@ -60,51 +60,37 @@ class Mamba(nn.Module):
 
 
 class LiquidAttention(nn.Module):
-    def __init__(self, hidden_size, num_heads):
+    def __init__(self, config):
         super(LiquidAttention, self).__init__()
+        
+        self.query = LiquidNet(config.d_model, config.d_inner, config.d_inner)
+        self.key = LiquidNet(config.d_model, config.d_inner, config.d_inner)
+        self.value = LiquidNet(config.d_model, config.d_inner, config.d_inner)
 
-        self.num_attention_heads = num_heads
-        self.attention_head_size = int(hidden_size / self.num_attention_heads)
-        self.all_head_size = self.num_attention_heads * self.attention_head_size
-
-        self.query = LiquidNet(hidden_size, 2*hidden_size, self.all_head_size)
-        self.key = LiquidNet(hidden_size, 2*hidden_size, self.all_head_size)
-        self.value = LiquidNet(hidden_size, 2*hidden_size, self.all_head_size)
-
-        self.out = LiquidNet(hidden_size, 2*hidden_size, hidden_size)
-        self.attn_dropout = nn.Dropout(0.2)
-        self.proj_dropout = nn.Dropout(0.2)
+        self.out = LiquidNet(config.d_inner, config.d_model, config.d_model)
 
         self.softmax = nn.Softmax(dim=-1)
-
-    def transpose_for_scores(self, x):
-        new_x_shape = x.size()[:-1] + (self.num_attention_heads, self.attention_head_size)
-        x = x.view(*new_x_shape)
-        return x.permute(0, 2, 1, 3)
+        
+        self.scale = (config.d_model // config.n_layers) ** -0.5
 
     def forward(self, hidden_states):
-        mixed_query_layer = self.query(hidden_states).unsqueeze(1)
-        mixed_key_layer = self.key(hidden_states).unsqueeze(1)
-        mixed_value_layer = self.value(hidden_states).unsqueeze(1)
+        hidden_states = hidden_states.squeeze(0)
+        
+        mixed_query_layer = self.query(hidden_states)
+        mixed_query_layer = mixed_query_layer * self.scale
+        
+        mixed_key_layer = self.key(hidden_states)
+        mixed_value_layer = self.value(hidden_states)
 
-        query_layer = self.transpose_for_scores(mixed_query_layer)
-        key_layer = self.transpose_for_scores(mixed_key_layer)
-        value_layer = self.transpose_for_scores(mixed_value_layer)
+        attn = torch.matmul(mixed_query_layer, mixed_key_layer.transpose(-2, -1)) 
 
-        attention_scores = torch.matmul(query_layer, key_layer.transpose(-1, -2))
-        attention_scores = attention_scores / math.sqrt(self.attention_head_size)
-        attention_probs = self.softmax(attention_scores)
+        p_attn = F.softmax(attn)
+        
+        attention_output = (p_attn @ mixed_value_layer)
 
-        attention_probs = self.attn_dropout(attention_probs)
-        context_layer = torch.matmul(attention_probs, value_layer)
-        context_layer = context_layer.permute(0, 2, 1, 3).contiguous()
-        new_context_layer_shape = context_layer.size()[:-2] + (self.all_head_size,)
-        context_layer = context_layer.view(*new_context_layer_shape)
-        attention_output = self.out(context_layer)
-        attention_output = self.proj_dropout(attention_output)
-        return attention_output
-
-
+        out = self.out(attention_output)
+        out = out.unsqueeze(0)
+        return out
 
 class ResidualBlock(nn.Module):
     def __init__(self, config: MambaConfig):
@@ -172,10 +158,14 @@ class MambaBlock(nn.Module):
 
         x = F.silu(x)
         y = self.ssm(x)
-
+        
         z = F.silu(z)
+        y2 = self.ssm(z)
 
         output = y * z
+        output2 = y2 * x
+    
+        output = output + output2
         output = self.out_proj(output) # (B, L, D)
 
         return output
