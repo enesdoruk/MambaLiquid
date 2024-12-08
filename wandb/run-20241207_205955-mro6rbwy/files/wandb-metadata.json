@@ -1,0 +1,168 @@
+{
+    "os": "Linux-5.15.0-126-generic-x86_64-with-glibc2.17",
+    "python": "3.8.18",
+    "heartbeatAt": "2024-12-07T17:59:55.968539",
+    "startedAt": "2024-12-07T17:59:55.387435",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "train.py",
+    "codePathLocal": "train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/enesdoruk/MambaLiquid.git",
+        "commit": "e8bc57b95fc0f4eb5b145577b42eaff38c675c89"
+    },
+    "email": "enes.doruk@ozu.edu.tr",
+    "root": "/AI/MambaLiquid",
+    "host": "enesdoruk",
+    "username": "enesdoruk",
+    "executable": "/AI/anaconda3/envs/adaptednet/bin/python",
+    "cpu_count": 16,
+    "cpu_count_logical": 24,
+    "cpu_freq": {
+        "current": 3316.7450000000003,
+        "min": 800.0,
+        "max": 5100.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 1401.88,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 5500.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        },
+        {
+            "current": 3400.0,
+            "min": 800.0,
+            "max": 4300.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 1600.7598304748535,
+            "used": 556.1085968017578
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 3080 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3080 Ti",
+            "memory_total": 12884901888
+        }
+    ],
+    "memory": {
+        "total": 31.117706298828125
+    }
+}

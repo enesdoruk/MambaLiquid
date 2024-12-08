@@ -1,0 +1,202 @@
+[32m[2024-12-07 20:59:57 _07-12-20][33m(train.py 201)[39m: INFO Creating model:Net(
+  (proj): LiquidNet(
+    (liquid_step): LiquidTimeStep(
+      (W_in): Linear(in_features=15, out_features=32, bias=True)
+      (W_h): Linear(in_features=32, out_features=32, bias=True)
+    )
+    (output_layer): Linear(in_features=32, out_features=32, bias=True)
+  )
+  (mamba): Mamba(
+    (layers): ModuleList(
+      (0-7): 8 x ResidualBlock(
+        (mixer): MambaBlock(
+          (in_proj): Linear(in_features=32, out_features=128, bias=False)
+          (conv1d): Conv1d(64, 64, kernel_size=(4,), stride=(1,), padding=(3,), groups=64)
+          (x_proj): Linear(in_features=64, out_features=34, bias=False)
+          (dt_proj): Linear(in_features=2, out_features=64, bias=True)
+          (out_proj): Linear(in_features=64, out_features=32, bias=False)
+        )
+        (norm): RMSNorm()
+      )
+    )
+    (attention): ModuleList(
+      (0-7): 8 x LiquidAttention(
+        (query): LiquidNet(
+          (liquid_step): LiquidTimeStep(
+            (W_in): Linear(in_features=32, out_features=64, bias=True)
+            (W_h): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (output_layer): Linear(in_features=64, out_features=64, bias=True)
+        )
+        (key): LiquidNet(
+          (liquid_step): LiquidTimeStep(
+            (W_in): Linear(in_features=32, out_features=64, bias=True)
+            (W_h): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (output_layer): Linear(in_features=64, out_features=64, bias=True)
+        )
+        (value): LiquidNet(
+          (liquid_step): LiquidTimeStep(
+            (W_in): Linear(in_features=32, out_features=64, bias=True)
+            (W_h): Linear(in_features=64, out_features=64, bias=True)
+          )
+          (output_layer): Linear(in_features=64, out_features=64, bias=True)
+        )
+        (out): LiquidNet(
+          (liquid_step): LiquidTimeStep(
+            (W_in): Linear(in_features=64, out_features=32, bias=True)
+            (W_h): Linear(in_features=32, out_features=32, bias=True)
+          )
+          (output_layer): Linear(in_features=32, out_features=32, bias=True)
+        )
+        (softmax): Softmax(dim=-1)
+      )
+    )
+    (norm_f): RMSNorm()
+  )
+  (dense): LiquidNet(
+    (liquid_step): LiquidTimeStep(
+      (W_in): Linear(in_features=32, out_features=1, bias=True)
+      (W_h): Linear(in_features=1, out_features=1, bias=True)
+    )
+    (output_layer): Linear(in_features=1, out_features=1, bias=True)
+  )
+  (act): Tanhshrink()
+)
+[32m[2024-12-07 20:59:57 _07-12-20][33m(train.py 94)[39m: INFO Start training
+> /AI/MambaLiquid/train.py(104)train()
+-> epoch_time = time.time()
+torch.Size([3381, 15])
+*** NameError: name 'get_model_complexity_info' is not defined
+Flops estimation was not finished successfully because of the following exception:
+<class 'ValueError'> : not enough values to unpack (expected 3, got 2)
+Traceback (most recent call last):
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/cmd.py", line 214, in onecmd
+    func = getattr(self, 'do_' + cmd)
+AttributeError: 'Pdb' object has no attribute 'do_flops'
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/ptflops/pytorch_engine.py", line 64, in get_flops_pytorch
+    _ = flops_model(batch)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1603, in _call_impl
+    result = forward_call(*args, **kwargs)
+  File "train.py", line 33, in forward
+    out = self.mamba(out)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/AI/MambaLiquid/model/mamba.py", line 51, in forward
+    x = layer(x)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/AI/MambaLiquid/model/mamba.py", line 103, in forward
+    output = self.mixer(self.norm(x)) + x
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/AI/MambaLiquid/model/mamba.py", line 150, in forward
+    _, L, _ = x.shape
+ValueError: not enough values to unpack (expected 3, got 2)
+torch.Size([1, 3381, 15])
+Net(
+  357.22 k, 97.061% Params, 1.27 GMac, 17.255% MACs,
+  (proj): LiquidNet(
+    2.62 k, 0.713% Params, 5.3 MMac, 0.072% MACs,
+    (liquid_step): LiquidTimeStep(
+      1.57 k, 0.426% Params, 1.73 MMac, 0.024% MACs,
+      (W_in): Linear(512, 0.139% Params, 1.73 MMac, 0.024% MACs, in_features=15, out_features=32, bias=True)
+      (W_h): Linear(1.06 k, 0.287% Params, 1.06 KMac, 0.000% MACs, in_features=32, out_features=32, bias=True)
+    )
+    (output_layer): Linear(1.06 k, 0.287% Params, 3.57 MMac, 0.049% MACs, in_features=32, out_features=32, bias=True)
+  )
+  (mamba): Mamba(
+    354.56 k, 96.338% Params, 1.26 GMac, 17.182% MACs,
+    (layers): ModuleList(
+      (0-7): 8 x ResidualBlock(
+        8.83 k, 2.400% Params, 37.87 MMac, 0.515% MACs,
+        (mixer): MambaBlock(
+          8.83 k, 2.400% Params, 37.87 MMac, 0.515% MACs,
+          (in_proj): Linear(4.1 k, 1.113% Params, 13.85 MMac, 0.188% MACs, in_features=32, out_features=128, bias=False)
+          (conv1d): Conv1d(320, 0.087% Params, 1.08 MMac, 0.015% MACs, 64, 64, kernel_size=(4,), stride=(1,), padding=(3,), groups=64)
+          (x_proj): Linear(2.18 k, 0.591% Params, 14.71 MMac, 0.200% MACs, in_features=64, out_features=34, bias=False)
+          (dt_proj): Linear(192, 0.052% Params, 1.3 MMac, 0.018% MACs, in_features=2, out_features=64, bias=True)
+          (out_proj): Linear(2.05 k, 0.556% Params, 6.92 MMac, 0.094% MACs, in_features=64, out_features=32, bias=False)
+        )
+        (norm): RMSNorm(0, 0.000% Params, 0.0 Mac, 0.000% MACs, )
+      )
+    )
+    (attention): ModuleList(
+      (0-7): 8 x LiquidAttention(
+        35.49 k, 9.642% Params, 119.98 MMac, 1.632% MACs,
+        (query): LiquidNet(
+          10.43 k, 2.834% Params, 35.27 MMac, 0.480% MACs,
+          (liquid_step): LiquidTimeStep(
+            6.27 k, 1.704% Params, 21.21 MMac, 0.289% MACs,
+            (W_in): Linear(2.11 k, 0.574% Params, 7.14 MMac, 0.097% MACs, in_features=32, out_features=64, bias=True)
+            (W_h): Linear(4.16 k, 1.130% Params, 14.06 MMac, 0.191% MACs, in_features=64, out_features=64, bias=True)
+          )
+          (output_layer): Linear(4.16 k, 1.130% Params, 14.06 MMac, 0.191% MACs, in_features=64, out_features=64, bias=True)
+        )
+        (key): LiquidNet(
+          10.43 k, 2.834% Params, 35.27 MMac, 0.480% MACs,
+          (liquid_step): LiquidTimeStep(
+            6.27 k, 1.704% Params, 21.21 MMac, 0.289% MACs,
+            (W_in): Linear(2.11 k, 0.574% Params, 7.14 MMac, 0.097% MACs, in_features=32, out_features=64, bias=True)
+            (W_h): Linear(4.16 k, 1.130% Params, 14.06 MMac, 0.191% MACs, in_features=64, out_features=64, bias=True)
+          )
+          (output_layer): Linear(4.16 k, 1.130% Params, 14.06 MMac, 0.191% MACs, in_features=64, out_features=64, bias=True)
+        )
+        (value): LiquidNet(
+          10.43 k, 2.834% Params, 35.27 MMac, 0.480% MACs,
+          (liquid_step): LiquidTimeStep(
+            6.27 k, 1.704% Params, 21.21 MMac, 0.289% MACs,
+            (W_in): Linear(2.11 k, 0.574% Params, 7.14 MMac, 0.097% MACs, in_features=32, out_features=64, bias=True)
+            (W_h): Linear(4.16 k, 1.130% Params, 14.06 MMac, 0.191% MACs, in_features=64, out_features=64, bias=True)
+          )
+          (output_layer): Linear(4.16 k, 1.130% Params, 14.06 MMac, 0.191% MACs, in_features=64, out_features=64, bias=True)
+        )
+        (out): LiquidNet(
+          4.19 k, 1.139% Params, 14.17 MMac, 0.193% MACs,
+          (liquid_step): LiquidTimeStep(
+            3.14 k, 0.852% Params, 10.6 MMac, 0.144% MACs,
+            (W_in): Linear(2.08 k, 0.565% Params, 7.03 MMac, 0.096% MACs, in_features=64, out_features=32, bias=True)
+            (W_h): Linear(1.06 k, 0.287% Params, 3.57 MMac, 0.049% MACs, in_features=32, out_features=32, bias=True)
+          )
+          (output_layer): Linear(1.06 k, 0.287% Params, 3.57 MMac, 0.049% MACs, in_features=32, out_features=32, bias=True)
+        )
+        (softmax): Softmax(0, 0.000% Params, 0.0 Mac, 0.000% MACs, dim=-1)
+      )
+    )
+    (norm_f): RMSNorm(0, 0.000% Params, 0.0 Mac, 0.000% MACs, )
+  )
+  (dense): LiquidNet(
+    37, 0.010% Params, 118.34 KMac, 0.002% MACs,
+    (liquid_step): LiquidTimeStep(
+      35, 0.010% Params, 111.58 KMac, 0.002% MACs,
+      (W_in): Linear(33, 0.009% Params, 111.57 KMac, 0.002% MACs, in_features=32, out_features=1, bias=True)
+      (W_h): Linear(2, 0.001% Params, 2.0 Mac, 0.000% MACs, in_features=1, out_features=1, bias=True)
+    )
+    (output_layer): Linear(2, 0.001% Params, 6.76 KMac, 0.000% MACs, in_features=1, out_features=1, bias=True)
+  )
+  (act): Tanhshrink(0, 0.000% Params, 0.0 Mac, 0.000% MACs, )
+)
+'368.04 k'
+'7.35 GMac'
+Traceback (most recent call last):
+  File "train.py", line 203, in <module>
+    train(args,model,logger)
+  File "train.py", line 104, in train
+    epoch_time = time.time()
+  File "train.py", line 104, in train
+    epoch_time = time.time()
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/bdb.py", line 88, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "/AI/anaconda3/envs/adaptednet/lib/python3.8/bdb.py", line 113, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit

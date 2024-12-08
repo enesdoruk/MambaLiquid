@@ -98,7 +98,7 @@ def train(args, model, logger):
     loss_tot = []
     for epoch in range(args.epochs):
         model.train()
-
+        
         epoch_time = time.time()
         start_time = time.time()
         
