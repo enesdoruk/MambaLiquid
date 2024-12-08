@@ -31,9 +31,6 @@ The stock data used in this repository was downloaded from [TuShare](https://tus
 
 ## Training MambaLiquid
 
-Command can be found training bash file  `scripts/training_transadapter.sh`.
-If you do not want to train baseline model, you can set ``--pseudo_lab False``
-
 ```
 python train.py 
 ```
