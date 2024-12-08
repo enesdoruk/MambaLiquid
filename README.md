@@ -1,4 +1,4 @@
-# TransAdapter: Swin Transformer for Feature-Centric Unsupervised Domain Adaptation
+# LiquidMamba: Liquid Neural Network Attention Based Mamba For Stock Prediction
 
 [![Star on GitHub](https://img.shields.io/github/stars/enesdoruk/MambaLiquid.svg?style=social)](https://github.com/enesdoruk/MambaLiquid)
 
